@@ -265,6 +265,30 @@ uniq -c | cut -b 7-
 uniq -u
 
 
+# Paste - 1
+# paste -s 删除分割符 在一行输出
+# paste -d';' 指定分割符，配合-s使用
+paste -s -d ';'
+
+
+# Paste - 2
+# - 表示取一个数据，即一行数据
+paste -d ';' - - - 
+paste -sd ';;\n'
+
+
+# Paste - 3
+# 制表符自动分割
+paste -s 
+paste -sd '\t'
+
+
+# Paste - 4
+# paste -d '\t\t\n' 可以指定字符之间的分隔符
+paste -sd '\t\t\n'
+
+
+
 
 
 
