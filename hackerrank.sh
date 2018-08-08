@@ -289,29 +289,192 @@ paste -sd '\t\t\n'
 
 
 
+# Read in an Array
+# array[index] 数组
+# array[@] 数组所有元素输出
+count=0
+while read line 
+do
+    array[count]=$line
+    count=($count+1)
+done
+echo "${array[@]}"
+
+
+
+# Slice an Array
+# 输出数组的3到7位置的元素
+# ${array[@]:n:m} 从下标3开始，取
+count=0
+while read line; do
+	array[count]=$line
+	count=($count+1)
+done
+echo "${array[@]:3:5}"
+
+
+
+# Filter an Array with Patterns
+# 输出不包含a或A的元素，配合正则
+count=0
+while read line; do
+    array[count]=$line
+    count=($count+1)
+done
+echo ${array[@]/*[aA]*/}
+
+
+
+# Concatenate an array with itself
+# 重复输出3次
+# 使用while read的时候，因为最后一个有回车，所以被导致没有最后一个，改用for和cat的组合
+count=0
+for cc in `cat`
+do
+    arr[count]=$cc
+    count=($count+1)
+done
+aa=("${arr[@]}" "${arr[@]}" "${arr[@]}")
+echo ${aa[@]}
+
+
+
+# Display an element of an array
+# 显示一个数组元素，愚蠢的字符串，需要使用for而不是while
+count=0
+array=()
+for word in `cat`
+do
+    array[count]=$word
+    count=($count+1)
+done
+echo ${array[3]}
+
+
+
+# Count the number of elements in an Array
+# 输出数组长度
+count=0
+array=()
+for word in `cat`
+do
+    array[count]=$word
+    count=($count+1)
+done
+echo ${#array[@]}
+
+
+
+# Remove the First Capital Letter from Each Element
+# 将首字母变为. 
+# 存储的时候，直接用cut -b取第二个开始
+count=0
+array=()
+for word in `cat`
+do 
+    array[count]=.$(echo $word | cut -b 2-)
+    count=($count+1)
+done
+echo ${array[@]}
+
+
+
+# `Grep` - A 
+# 截取包含the that then those的内容
+# grep -w匹配单词而不是子串
+# grep -i不区分大小写
+# grep -E使用扩展正则
+grep -wi -E 'the|that|then|those'
+
+
+# `Grep` - B
+# 正则匹配，出现重复的字符，中间可能有空格
+# grep -E '(\w)( )?\1'
+
+
+
+# `Grep` #1
+# 正则匹配 包含the单词，且大小敏感
+grep -w -E 'the'
+
+
+# `Grep` #2
+# 正则匹配，包含the，忽略大小写
+grep -wi -E 'the'
+
+
+# `Grep` #3
+# 不含that的
+# grep -v 查找不含字符
+grep -wiv  'that'
+
+
+
+# `Sed` Command #1 
+# sed 's/abc/dd' 替换abc成dd  
+sed 's/\<the\>/this/1'
+
+
+
+# `Sed` Command #2
+# i不分大小写
+sed 's/\<thy\>/your/gi'
+
+
+
+# `Sed` Command #3
+# 在thy的前后加{和} 即 Thy -- {Thy}
+# &表示匹配到的字符串
+sed 's/\<thy\>/\{&\}/gi'
+
+
+
+# `Sed` Command #4
+# 将前3个数字替换成****, 配合空格进行替换
+sed 's/[0-9]* /**** /g'
+
+
+
+# `Sed` Command #5
+# 反序输出4个数
+# \4 \3 \2 \1表示匹配到的内容
+sed -r 's/(.+ )(.+ )(.+ )(....)/\4 \3\2\1/g'
 
 
 
 
+# 'Awk' - 1
+# NF字段数量，$1第一个字段
+awk '{if(NF<4) print "Not all scores are available for "$1;}'
+
+
+
+# 'Awk' - 2 
+# 判断是否及格 if else的用法
+awk '{if($2<50||$3<50||$4<50 print $1" : Fail";else print $1" : Pass")}'
+
+
+
+# 'Awk' - 3
+# 判断等级和及格 if else if else的用法
+awk '{if($2+$3+$4>=240) print $0" : A";else if($2+$3+$4>=180) print $0" : B";else if($2+$3+$4>=150) print $0" : C";else print $0" : FAIL";}'
+
+
+
+# 'Awk' - 4
+# 2行一起 printf格式化输出
+awk '{printf (NR%2==0) ? $0"\n" : $0";"}'
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Lonely Integer - Bash
+# 输出出现次数最少的数字
+read 
+tr ' ' '\n'|sort -n|uniq -u
+# tr先进行分割成每行
+# sort 数值排序
+# uniq 去除重复的
 
 
 
